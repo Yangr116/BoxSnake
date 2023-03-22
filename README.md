@@ -5,3 +5,20 @@
 ### Introduciton
 Box-supervised instance segmentation has gained much attention as it requires only simple box annotations instead of costly mask or polygon annotations. However, existing box-supervised instance segmentation models mainly focus on mask-based frameworks. We propose a new end-to-end training technique, termed BoxSnake, to achieve effective **polygonal instance segmentation using only box annotations for the first time**. Our method consists of two loss functions: (1) a point-based unary loss that constrains the bounding box of predicted polygons to achieve coarse-grained segmentation; and (2) a distance-aware pairwise loss that encourages the predicted polygons to fit the object boundaries.
 
+
+
+
+
+
+
+If you find our paper helpful, please cite:
+```
+@misc{BoxSnake,
+      title={BoxSnake: Polygonal Instance Segmentation with Box Supervision}, 
+      author={Rui Yang and Lin Song and Yixiao Ge and Xiu Li},
+      year={2023},
+      eprint={2303.11630},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+```
