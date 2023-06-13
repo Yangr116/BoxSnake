@@ -1,0 +1,69 @@
+# output dir
+output
+instant_test_output
+inference_test_output
+
+
+*.png
+*.json
+*.diff
+*.jpg
+!/projects/DensePose/doc/images/*.jpg
+
+# compilation and distribution
+__pycache__
+_ext
+*.pyc
+*.pyd
+*.so
+*.dll
+*.egg-info/
+build/
+dist/
+wheels/
+.circleci
+.flake8
+.clang-format
+
+
+# pytorch/python/numpy formats
+*.pth
+*.pkl
+*.npy
+*.ts
+model_ts*.txt
+
+# ipython/jupyter notebooks
+*.ipynb
+**/.ipynb_checkpoints/
+
+# Editor temporaries
+*.swn
+*.swo
+*.swp
+*~
+
+# editor settings
+.idea
+.vscode
+_darcs
+
+# project dirs
+/detectron2/model_zoo/configs
+/datasets/*
+!/datasets/*.*
+/models
+/snippet
+
+./output/*
+./pretrained
+
+./outputs
+modeling/layers/diff_ras/build
+modeling/layers/diff_ras/dist
+modeling/layers/diff_ras/*.egg-info
+modeling/layers/deform_attn/build
+modeling/layers/deform_attn/dist
+modeling/layers/deform_attn/*.egg-info
+
+./taiji_config

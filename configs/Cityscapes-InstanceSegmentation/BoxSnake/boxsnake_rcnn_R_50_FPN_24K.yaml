@@ -1,0 +1,69 @@
+_BASE_: "../Base-BoxSnake-RCNN-FPN.yaml"
+MODEL:
+  WEIGHTS: "detectron2://ImageNetPretrained/MSRA/R-50.pkl"
+  MASK_ON: True
+  ROI_MASK_HEAD:
+    NAME: "PolygonHead"
+    POOLER_TYPE: ""
+  BOUNDARY_HEAD:
+    IN_FEATURES: ["p2", "p3", "p4", "p5"]
+    PRED_WITHIN_BOX: False # yr revised 
+    POLY_NUM_PTS: 64
+    CLS_AGNOSTIC_MASK: True
+    PREPOOL: False
+    UPSAMPLING: False
+  DIFFRAS:
+    RESOLUTIONS: (64, 64, 64, 64, 64, 64, 64, 64)
+    USE_RASTERIZED_GT: False
+    INV_SMOOTHNESS_SCHED: (0.1,)
+  RESNETS:
+    DEPTH: 50
+  ROI_HEADS:
+    PROPOSAL_ONLY_GT: False
+  BOX_SUP:
+    ENABLE: True
+    LOSS_PROJ: False
+    LOSS_PROJ_TYPE: ["dice"]
+    LOSS_PROJ_DICE_WEIGHT: 1.0
+    LOSS_PROJ_CE_WEIGHT: 0.0
+    LOSS_POINTS_PROJ: True
+    LOSS_POINTS_PROJ_WEIGHT: 1.0
+    LOSS_PAIRWISE: True
+    LOSS_PAIRWISE_WARMUP_ITER: 5000 # 5k ?
+    PAIRWISE_KERNEL_SIZE: 3
+    PAIRWISE_DILATION: 2
+    PAIRWISE_SIGMA: 0.5 # cityscapes dataset has a different color distribution
+    LOSS_PAIRWISE_WEIGHT: 0.5
+    CROP_PREDICTS: True
+    CROP_SIZE: 64
+    MASK_PADDING_SIZE: 4
+    LOSS_LEVEL_SET: True
+    LOSS_LEVEL_SET_TYPE: 'v2'
+    LOSS_LEVEL_SET_WEIGHT: 0.03  
+
+# This is similar to the setting used in Mask R-CNN paper, Appendix A
+# But there are some differences, e.g., we did not initialize the output
+# layer using the corresponding classes from COCO
+INPUT:
+  MIN_SIZE_TRAIN: (800, 832, 864, 896, 928, 960, 992, 1024)
+  MIN_SIZE_TRAIN_SAMPLING: "choice"
+  MIN_SIZE_TEST: 1024
+  MAX_SIZE_TRAIN: 2048
+  MAX_SIZE_TEST: 2048
+DATASETS:
+  TRAIN: ("cityscapes_fine_instance_seg_train",)
+  TEST: ("cityscapes_fine_instance_seg_val",)
+SOLVER:
+  OPTIMIZER: "ADAM"
+  BASE_LR: 1e-4
+  WEIGHT_DECAY: 0.20
+  WEIGHT_DECAY_BIAS: 0.0
+  WEIGHT_DECAY_NORM: 0.0
+  STEPS: (18000,)
+  MAX_ITER: 24000
+  IMS_PER_BATCH: 8
+  CHECKPOINT_PERIOD: 4000
+TEST:
+  EVAL_PERIOD: 8000
+DATALOADER:
+  NUM_WORKERS: 8
