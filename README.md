@@ -3,7 +3,7 @@
 
 **BoxSnake** is an end-to-end training technique to achieve effective **polygonal instance segmentation using only box annotations**. It consists of two loss functions: (1) a point-based unary loss that constrains the bounding box of predicted polygons to achieve coarse-grained segmentation; and (2) a distance-aware pairwise loss that encourages the predicted polygons to fit the object boundaries.
 
-![Intro](./assets/BoxSnake.png)
+![Intro](assets/BoxSnake.png)
 [Arxiv Paper](https://arxiv.org/pdf/2303.11630.pdf) | [Video Demo]
 
 ## Installation
@@ -15,6 +15,10 @@ python -m pip install 'git+https://github.com/facebookresearch/detectron2.git'
 ```
 
 BoxSnake also uses the deformable attention modules introduced in [Deformable-DETR](https://github.com/fundamentalvision/Deformable-DETR) and the differentiable rasterizer introduced in [BoundaryFormer](https://github.com/mlpc-ucsd/BoundaryFormer). Please build them on your system:
+``` shell
+bash scripts/auto_build.sh
+```
+or 
 ``` shell
 cd ./modeling/layers/deform_attn
 sh ./make.sh
@@ -59,6 +63,11 @@ To train on COCO dataset using the R50 backbone at a 1X schedule:
 ```shell
 # 8 gpus
 python train_net.py --num-gpus 8 --config-file configs/COCO-InstanceSegmentation/BoxSnake_RCNN/boxsnake_rcnn_R_50_FPN_1x.yaml
+```
+
+You can also run below code:
+```
+bash scripts/auto_run.sh $CONFIG  # your config
 ```
 
 ### Inference
