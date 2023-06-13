@@ -8,11 +8,11 @@
 
 ## Installation
 ---
-
-BoxSnake relies on the Detectron2, so please use the same installation process as Detectron2 (more ways can be found [here](https://detectron2.readthedocs.io/tutorials/install.html)):
+To install Detectron2, torch 1.9.0+ for BoxSnake:
 ``` shell
-python -m pip install 'git+https://github.com/facebookresearch/detectron2.git'
+pip install -r requirements.txt
 ```
+
 
 BoxSnake also uses the deformable attention modules introduced in [Deformable-DETR](https://github.com/fundamentalvision/Deformable-DETR) and the differentiable rasterizer introduced in [BoundaryFormer](https://github.com/mlpc-ucsd/BoundaryFormer). Please build them on your system:
 ``` shell
@@ -31,22 +31,22 @@ python setup.py build install
 
 ### COCO
 
-| Arch |  Backbone  | lr<br>sched | mask <br>AP | Download |
-|:----:|:----------:|:-----------:|:-----------:|:--------:|
-| RCNN |   R50-FPN  |      1X     |     31.1    |  weights |
-| RCNN |  R101-FPN  |      2X     |     31.6    |  weights |
-| RCNN |  R101-FPN  |      1X     |     31.6    |  weights |
-| RCNN |  R101-FPN  |      2X     |     32.1    |  weights |
-| RCNN | Swin-B-FPN |      1X     |     38.3    |  weights |
-| RCNN | Swin-L-FPN |      1X     |     38.9    |  weights |
+| Arch |  Backbone  | lr<br>sched | mask <br>AP |mask <br>AP | Download |
+|:----:|:----------:|:-----------:|:-----------:|:-----------:|:--------:|
+| RCNN |   R50-FPN  |      1X     |     31.1    |     [config](https://github.com/Yangr116/BoxSnake/blob/master/configs/COCO-InstanceSegmentation/BoxSnake_RCNN/boxsnake_R_50_FPN_1x.yaml)    |  [weights](https://drive.google.com/file/d/1NTliyb8k7LWjIIaQJ8nRzide7A1eCGmc/view?usp=share_link) |
+| RCNN |  R50-FPN  |      2X     |     31.6    |     [config](https://github.com/Yangr116/BoxSnake/blob/master/configs/COCO-InstanceSegmentation/BoxSnake_RCNN/boxsnake_R_50_FPN_2x.yaml)    |  [weights](https://drive.google.com/file/d/1ay1OSOMBSePEYsGNUfRmCDq4RvDJkXn2/view?usp=share_link) |
+| RCNN |  R101-FPN  |      1X     |     31.6    |     [config](https://github.com/Yangr116/BoxSnake/blob/master/configs/COCO-InstanceSegmentation/BoxSnake_RCNN/boxsnake_R_101_FPN_1x.yaml)    |  [weights](https://drive.google.com/file/d/1Fx1OYaoSgoTb4b-xU7yRTIyg7VeC7FtO/view?usp=share_link) |
+| RCNN |  R101-FPN  |      2X     |     32.1    |     [config](https://github.com/Yangr116/BoxSnake/blob/master/configs/COCO-InstanceSegmentation/BoxSnake_RCNN/boxsnake_R_101_FPN_2x.yaml)    |  [weights](https://drive.google.com/file/d/19jQaUHzZvzkL8DGcRpJ7RrXK08PleT0H/view?usp=share_link) |
+| RCNN | Swin-B-FPN |      1X     |     38.3    |     [config](https://github.com/Yangr116/BoxSnake/blob/master/configs/COCO-InstanceSegmentation/BoxSnake_RCNN/boxsnake_swin_b_FPN_1x.yaml)    |  [weights](https://drive.google.com/file/d/1tg4PbDSe2oJmtosefLbngPiukhYEnFhM/view?usp=share_link) |
+| RCNN | Swin-L-FPN |      1X     |     38.9    |     [config]()    |  [weights](https://github.com/Yangr116/BoxSnake/blob/master/configs/COCO-InstanceSegmentation/BoxSnake_RCNN/boxsnake_swin_l_FPN_1x.yaml) |
 
 mask AP is the result on validation set.
 
 ### Cityscapes
 
-| Arch | Backbone | lr<br>sched | mask <br>AP | Download |
-|:----:|:--------:|:-----------:|:-----------:|:--------:|
-| RCNN |  R50-FPN |   24K iter  |     26.3    |  weights |
+| Arch | Backbone | lr<br>sched | mask <br>AP | config | Download |
+|:----:|:--------:|:-----------:|:-----------:|:-----------:|:--------:|
+| RCNN |  R50-FPN |   24K iter  |     26.3    |     [config](https://github.com/Yangr116/BoxSnake/blob/master/configs/Cityscapes-InstanceSegmentation/BoxSnake/boxsnake_rcnn_R_50_FPN_24K.yaml)    |  [weights](https://drive.google.com/file/d/1_5IBS9PUTlakk-KGuSnDkAa9zcDk9xdj/view?usp=share_link) |
 
 
 ## Getting Start

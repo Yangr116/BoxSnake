@@ -1,0 +1,5 @@
+_BASE_: "./boxsnake_R_101_FPN_1x.yaml"
+
+SOLVER:
+  STEPS: (120000, 160000) # 2X
+  MAX_ITER: 180000

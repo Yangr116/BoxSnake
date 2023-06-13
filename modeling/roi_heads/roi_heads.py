@@ -103,9 +103,6 @@ class StandardROIHeadsV2(StandardROIHeads):
 
         self.train_on_pred_boxes = train_on_pred_boxes
 
-        # roi jitter
-        self.enable_roi_jitter = enable_roi_jitter
-        self.roi_jitter = roi_jitter
 
     @classmethod
     def from_config(cls, cfg, input_shape):
@@ -123,16 +120,7 @@ class StandardROIHeadsV2(StandardROIHeads):
             ret.update(cls._init_mask_head(cfg, input_shape))
         if inspect.ismethod(cls._init_keypoint_head):
             ret.update(cls._init_keypoint_head(cfg, input_shape))
-        # roi jitter params
-        ret_roi_jitter = {
-            'enable_roi_jitter': cfg.MODEL.ROI_MASK_HEAD.ENABLE_ROI_JITTER,
-            'roi_jitter': RoIJitter(
-                num_jitter=cfg.MODEL.ROI_MASK_HEAD.NUM_ROI_JITTER,
-                noise_scale=cfg.MODEL.ROI_MASK_HEAD.NOISE_SCALE,
-                iou_thr=cfg.MODEL.ROI_MASK_HEAD.ROI_JITTER_IOU_THR,
-                ), # add roi jitter in self._forward_mask_head
-        }
-        ret.update(ret_roi_jitter)
+
         return ret
 
     def forward(
@@ -227,39 +215,3 @@ class StandardROIHeadsV2(StandardROIHeads):
         else:
             features = {f: features[f] for f in self.mask_in_features}
         return self.mask_head(images, features, instances)
-
-
-class RoIJitter():
-    def __init__(self, num_jitter=3, noise_scale=0.5, iou_thr=0.7):
-        self.num_jitter = num_jitter # 每个 box 抖动几次
-        self.noise_scale = noise_scale # 越小 抖动的越小
-        self.iou_thr = iou_thr
-
-    def __call__(self, instances, targets):
-        """
-        instances: List(Instances(), ...) 里面只包含 pos box
-        """
-        # 这里会修改 instance 
-        # take out gt boxes 
-        for idx, (instance, target) in enumerate(zip(instances, targets)):
-            roi_instance = Instances(instance.image_size)
-            num_instances = len(target)
-            gt_boxes = (target.gt_boxes.tensor).repeat(self.num_jitter, 1) # (x1, y1, x2, y2) format
-            _gt_boxes = Boxes(gt_boxes)
-            rand_sign = torch.randint_like(gt_boxes, low=0, high=2, dtype=torch.float32) * 2.0 - 1.0 # +1 or -1
-            rand_part = torch.rand_like(gt_boxes) * rand_sign * self.noise_scale # this noise belong to (-noise_scale, noise_scale)
-            wh = gt_boxes[:, 2:] - gt_boxes[:, :2] # shape=(N, 2)
-            diff = torch.cat([wh, wh], dim=-1) / 2 # shape=(N, 4)
-            roi_jitter = gt_boxes + torch.mul(diff, rand_part).type_as(gt_boxes) # 在 (x1, y1, x2, y2) 上的偏移 等价于 中心点偏移和尺度缩放
-            roi_jitter = Boxes(roi_jitter)
-            roi_jitter.clip(instance.image_size) # 限制box在图像范围内部
-            # iou
-            iou_flag = matched_pairwise_iou(roi_jitter, _gt_boxes) > self.iou_thr # return (N)
-            num_reserved_inst = len(torch.nonzero(iou_flag))
-            # prepare instances
-            roi_instance.proposal_boxes = roi_jitter[iou_flag]
-            roi_instance.objectness_logits = torch.ones(num_reserved_inst).type_as(instance.objectness_logits)
-            roi_instance.gt_classes = torch.ones(num_reserved_inst).type_as(instance.gt_classes)
-            roi_instance.gt_boxes = _gt_boxes[iou_flag]
-            instances[idx] = instance.cat([instance, roi_instance])
-        return instances
