@@ -85,7 +85,7 @@ python demo/demo.py --config-file configs/COCO-InstanceSegmentation/BoxSnake_RCN
 ## Others
 ---
 
-BoxSnake is inspired by traditional levelset and GVF methods, and you can check below links to learn them:
+BoxSnake is inspired by traditional levelset (including [boxlevelset](https://github.com/LiWentomng/boxlevelset)) and GVF methods, and you can check below links to learn them:
 
 - https://www.csd.uwo.ca/~yboykov/Presentations/ECCV06_tutorial_partII_dan.pdf
 - https://www.youtube.com/watch?v=1ZJ88JyLPZI
