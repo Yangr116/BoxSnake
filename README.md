@@ -51,7 +51,7 @@ mask AP is the result on validation set.
 
 ## Getting Start
 ----
-We use the [COCO dataset](https://cocodataset.org/#home) and [Cityscapes dataset](https://www.cityscapes-dataset.com). Please following [here](https://github.com/Yangr116/BoxSnake/datasets/README.md) to prepare them.
+We use the [COCO dataset](https://cocodataset.org/#home) and [Cityscapes dataset](https://www.cityscapes-dataset.com). Please following [here](https://github.com/Yangr116/BoxSnake/blob/master/datasets/README.md) to prepare them.
 
 If you would like to use swin transformer backbone, please download swin weights from [here](https://github.com/microsoft/Swin-Transformer) and convert them to pkl format:
 ```
