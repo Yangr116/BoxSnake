@@ -442,7 +442,7 @@ class PolygonHead(nn.Module):
                                                    self.crop_size,  # h
                                                    1.0).unsqueeze(1).contiguous()  # the output is (N, 1, H, W)
                               for lid, output_coords in enumerate(outputs_coords)]
-                # here, we allow the vertices superpass the box. next, we padding the rasterized the mask
+                # here, we allow the vertices superpass the box. next, we padding the rasterized mask
                 pred_masks = [
                     F.pad(pred_mask, tuple(4*[self.mask_padding_size]), mode='constant', value=0.)
                     for pred_mask in pred_masks]

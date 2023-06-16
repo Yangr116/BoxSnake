@@ -55,8 +55,6 @@ class StandardROIHeadsV2(StandardROIHeads):
         keypoint_pooler: Optional[ROIPooler] = None,
         keypoint_head: Optional[nn.Module] = None,
         train_on_pred_boxes: bool = False,
-        enable_roi_jitter: bool = False,
-        roi_jitter = None, 
         **kwargs,
     ):
         """
@@ -203,10 +201,6 @@ class StandardROIHeadsV2(StandardROIHeads):
         if self.training:
             # head is only trained on positive proposals.
             instances, _ = select_foreground_proposals(instances, self.num_classes)
-            # roi jitter, how to adding mask target here ? 这里放的是 pos mask target
-            # proposal_append_gt 会将 gt 加入到 instances 中，但是不知道会有几个 gt 
-            if self.enable_roi_jitter:
-                instances = self.roi_jitter(instances, targets) # TODO: adding roi jitter
 
         if self.mask_pooler is not None:
             features = [features[f] for f in self.mask_in_features]
